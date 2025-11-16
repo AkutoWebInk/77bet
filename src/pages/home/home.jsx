@@ -24,14 +24,6 @@ const shortcuts =[
   {img:whiteImg, name:'NULL'},
   {img:whiteImg, name:'NULL'},
   {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
-  {img:whiteImg, name:'NULL'},
 ]
 
 
