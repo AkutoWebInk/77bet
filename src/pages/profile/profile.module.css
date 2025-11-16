@@ -1,0 +1,75 @@
+/* Layout */
+.page { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  margin-bottom: 60px; 
+  gap: 10px; 
+  box-sizing: border-box; 
+  margin: 5px;
+ }
+
+/* Profile */
+.profile {
+  margin-top: 55px;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 12px 6px rgba(0, 0, 0, 0.2);
+  gap: 5px;
+  padding: 10px 0 20px 0;
+}
+
+.profile span,
+.profile p {
+  margin: 0;
+}
+
+/* Profile picture */
+.profilePic {
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 0 12px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Animations */
+@keyframes sparkle {
+  0%   { text-shadow: 0 0 10px rgba(0, 200, 0, 0.2); }
+  50%  { text-shadow: 0 0 10px rgba(0, 255, 0, 1); }
+  100% { text-shadow: 0 0 10px rgba(0, 200, 0, 0.2); }
+}
+
+@keyframes breathe {
+  0%   { box-shadow: 0 0 5px rgba(0, 255, 0, 0.3); background-color: #008000; }
+  50%  { box-shadow: 0 0 6px rgba(0, 255, 0, 1); background-color: #00ff00; }
+  100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.3); background-color: #008000; }
+}
+
+/* Logout Button */
+.logout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  background-color: #121212;
+  border: 0;
+  color: white;
+  font-size: 16px;
+  font-weight: 100;
+}
+
+.logout span {
+  width: 35px;
+}
+
+.icon {
+  font-size: 35px;
+  text-shadow: 3px 3px 3px black;
+}
