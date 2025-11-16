@@ -57,12 +57,13 @@
   width: 100%;
   background-color: transparent;
   display: flex;
+  height: auto;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   color: white;
   overflow: hidden; /* optional, can remove */
-  transition: height 0.4s ease; /* optional smooth transition */
+  transition: max-height .1s ease; /* optional smooth transition */
 }
 
 .button {
@@ -76,25 +77,35 @@
   color: rgba(255, 255, 255, .3);
   font-size: 16px;
   font-weight: 100;
-  transition: height 0.4s ease, color 0.4s ease;
+}
+.icon {
+  transition: transform 0.3s ease-in-out;
+  opacity: 1;
 }
 
 .expanded {
-  height: 450px;
+  max-height: auto;
+  transition: height .1s ease;
   color: white;
-}
+  }
+  .expanded .icon {
+    transform: rotateX(180deg);
+  }
+  .expanded div{
+    opacity: 1;
+  }
 
 .collapsed {
-  height: 50px;
   background-color: transparent;
   color: rgba(255, 255, 255, 0.7);
-}
-  .icon {
-    transition: transform 0.3s ease-in-out;
-  } 
-  .expanded .icon {
-      transform: rotateX(180deg);
   }
+  .collapsed div{
+    opacity: 0;
+    height: 0px;
+  }
+
+
+
 /*----------------- Animations -----------------*/
 
 @keyframes bg {

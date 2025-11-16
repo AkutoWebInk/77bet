@@ -1,0 +1,72 @@
+.swiper {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 5px;
+
+}
+.swiper::-webkit-scrollbar {
+        display: none;
+        }
+
+.swiper button {
+    flex: 0 0 auto;
+    height: 90%;
+    width: 70px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    border-radius: 5px;
+    /* animation: slideIn .9s ease-in-out forwards; */
+}
+
+.icon {
+    width: 45px;
+    height: 45px;
+    filter: drop-shadow(0px 2px 6px rgba(0,0,0,.9));
+    object-fit: contain;
+}
+
+.swiper button span {
+    width: 100%;
+    font-size: 14px;
+    white-space: nowrap;
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    z-index: 1;
+    color: rgba(255,255,255,.7);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: .5;
+    scale: .5;
+    transform: translate(0, 50vh);
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translate(1000px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+}
+}

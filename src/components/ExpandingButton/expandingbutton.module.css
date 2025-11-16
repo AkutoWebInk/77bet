@@ -3,7 +3,7 @@
     border-radius: 5px;
     padding: 0px;
     gap:0px;
-    transition: height .1s ease-in-out;
+    transition: max-height .3s ease;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -11,10 +11,10 @@
     border-radius: 5px;
     }
     .expanded{
-        height: 450px;
+        max-height: auto;
     }
     .collapsed{
-        height: 50px;
+        max-height: 50px;
     }
 
 .expand{
@@ -42,8 +42,20 @@
     height: 40px;
 }
 .icon {
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease;
 }
 .expanded .icon {
     transform: rotateX(180deg);
+}
+
+.content {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .3s ease, transform .5s ease;
+  border-radius: 10px ;
+}
+
+.expanded .content {
+  opacity: 1;
+  transform: translateY(0);
 }

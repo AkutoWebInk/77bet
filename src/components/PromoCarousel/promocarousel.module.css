@@ -1,0 +1,18 @@
+.swiper {
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-top: 55px;
+  width: calc(100% + 10px);
+  background-color: #121212;
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, .3);
+  border-bottom: 2px solid rgba(255, 255, 255, .9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: visible;
+}
+.swiper img {
+  width: 100%;
+  display: block;
+}

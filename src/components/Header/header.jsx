@@ -2,7 +2,7 @@
 import styles from './header.module.css';
 
 // Assets:
-import icon from '../../assets/77.png';
+import icon from '../../assets/77-.png';
 
 // Components:
 import AuthButtons from '../AuthButtons/authbuttons';
