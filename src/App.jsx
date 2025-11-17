@@ -4,13 +4,13 @@ import './app.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 // Layout:
-import Layout from './pages/layout/layout';
-//Pages:
-import Home from './pages/home/home';
-import Casino from './pages/casino/casino';
-import Login from './pages/login/login';
-import Register from './pages/register/register';
-import Profile from './pages/profile/profile';
+import Layout from './pages/Layout/Layout';
+// Pages:
+import Home from './pages/Home/Home';
+import Casino from './pages/Casino/Casino';
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+import Profile from './pages/Profile/Profile';
 
 
 function App() {
