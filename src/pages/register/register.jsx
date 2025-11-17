@@ -3,7 +3,7 @@ import styles from './register.module.css';
 import { MdTextsms } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
-// import headerImg from '../../assets/images/promo-banners/double-deposit-online-horizontal.png';
+import headerImg from '../../assets/old-assets/double-deposit.png';
 
 
 export default function Register() {
@@ -14,12 +14,13 @@ export default function Register() {
     smscode: '',
     cpf: ''
   });
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  };  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ export default function Register() {
   return (
     <section className={styles.page}>
         <div className={styles.header}>
-          {/* <img src={headerImg} className={styles.headerImg} /> */}
+          <img src={headerImg} className={styles.headerImg} />
         </div>
 
         <div className={styles.bodyText}>

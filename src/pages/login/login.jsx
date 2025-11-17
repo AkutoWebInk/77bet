@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from './login.module.css';
 import { FaEye, FaRegEyeSlash } from 'react-icons/fa';
-// import headerImg from '../../assets/images/promo-banners/double-deposit-online-horizontal.png';
+import headerImg from '../../assets/old-assets/double-deposit.png';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -20,7 +20,7 @@ export default function Login() {
   return (
     <section className={styles.page}>
       <div className={styles.header}>
-        {/* <img src={headerImg} className={styles.headerImg}/> */}
+        <img src={headerImg} className={styles.headerImg}/>
       </div>
 
       <div className={styles.bodyText}>
