@@ -1,1 +1,1 @@
-export const API_PATH = 'http://127.0.0.1:8000/api';
+export const API_PATH = 'http://100.28.1.144/api';
