@@ -131,3 +131,21 @@
 .loginContainer button[type="submit"]:focus{
   box-shadow: 0 0 1 0px rgba(255,255,255,0.25);
 }
+
+/* same as before, only change is to use eyeButton for calendar */
+.inputGroup input.hasRightAddon,
+.inputGroup input.hasRightAddon:focus{
+  border: none;
+}
+
+.eyeButton{
+  height: 50px;
+  width: 50px;
+  background: transparent;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  background-color: #121212;
+}

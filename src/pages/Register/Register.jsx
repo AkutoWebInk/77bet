@@ -5,29 +5,56 @@ import { FaEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import headerImg from './assets/double-deposit.png';
 
-
-
 // API calls:
-import {register} from '../../api/services/register';
-
-
-
+import { register } from '../../api/services/register';
 
 export default function Register() {
-  
+
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    cpf: '',
     phone: '',
     smscode: '',
-    cpf: ''
+    email: '',
+    password: '',
+    repeatPassword: ''
   });
 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    let formattedValue = value;
+
+    if(name === 'cpf') {
+      // digits only, format 000.000.000-00
+      formattedValue = value.replace(/\D/g, '').slice(0, 11);
+      formattedValue = formattedValue.replace(/(\d{3})(\d)/, '$1.$2');
+      formattedValue = formattedValue.replace(/(\d{3})(\d)/, '$1.$2');
+      formattedValue = formattedValue.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+
+    if(name === 'birthDate') {
+      // digits only, format dd/mm/yyyy
+      formattedValue = value.replace(/\D/g, '').slice(0, 8);
+      formattedValue = formattedValue.replace(/(\d{2})(\d)/, '$1/$2');
+      formattedValue = formattedValue.replace(/(\d{2})(\d)/, '$1/$2');
+    }
+
+    if(name === 'phone') {
+      // digits only, format as (XX) XXXXX-XXXX
+      formattedValue = value.replace(/\D/g, '').slice(0, 11);
+      if(formattedValue.length > 2) {
+        formattedValue = `(${formattedValue.slice(0,2)}) ${formattedValue.slice(2)}`;
+      }
+      if(formattedValue.length > 9) {
+        formattedValue = formattedValue.slice(0, 9) + '-' + formattedValue.slice(9);
+      }
+    }
+
+    setFormData(prev => ({ ...prev, [name]: formattedValue }));
   };
 
   const handleSubmit = async (e) => {
@@ -40,31 +67,80 @@ export default function Register() {
     }
   };
 
-
   const handleSendSms = (e) => {
     e.preventDefault();
-    console.log('Send SMS to', formData.phone);
-    // implement real sending logic here
+    console.log('Enviar SMS para', formData.phone);
   };
 
   const togglePassword = () => setShowPassword(v => !v);
 
   return (
     <section className={styles.page}>
-        <div className={styles.header}>
-          <img src={headerImg} className={styles.headerImg} />
+
+      <div className={styles.header}>
+        <img src={headerImg} className={styles.headerImg} />
+      </div>
+
+      <div className={styles.bodyText}>
+        <h2>Criar Conta</h2>
+        <p>Preencha os campos abaixo para criar sua conta.</p>
+      </div>
+
+      <form className={styles.loginContainer} onSubmit={handleSubmit}>
+
+        <div className={styles.inputGroup}>
+          <input
+            type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            placeholder="Nome"
+            required
+            aria-label="Nome"
+          />
         </div>
 
-        <div className={styles.bodyText}>
-          <h2>Criar Conta</h2>
-          <p>Preencha os campos abaixo para criar sua conta.</p>
+        <div className={styles.inputGroup}>
+          <input
+            type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            placeholder="Sobrenome"
+            required
+            aria-label="Sobrenome"
+          />
         </div>
-      
-      <form className={styles.loginContainer} onSubmit={handleSubmit}>
+
+        <div className={styles.inputGroup}>
+          <input
+            type="text"
+            name="birthDate"
+            value={formData.birthDate}
+            onChange={handleChange}
+            placeholder="Data de Nascimento"
+            required
+            aria-label="Data de Nascimento"
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <span className={styles.leftAddon}>CPF</span>
+          <input
+            type="text"
+            name="cpf"
+            value={formData.cpf}
+            onChange={handleChange}
+            placeholder="CPF"
+            required
+            aria-label="CPF"
+          />
+        </div>
+
         <div className={styles.inputGroup}>
           <span className={styles.leftAddon}>+55</span>
           <input
-            type="tel"
+            type="text"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
@@ -72,6 +148,14 @@ export default function Register() {
             required
             aria-label="Número de Celular"
           />
+          <button
+            type="button"
+            className={styles.rightAddon}
+            onClick={handleSendSms}
+            aria-label="Enviar código por SMS"
+          >
+            <MdTextsms className={styles.reactIcon} />
+          </button>
         </div>
 
         <div className={styles.inputGroup}>
@@ -85,27 +169,6 @@ export default function Register() {
             placeholder="Verificação por SMS"
             required
             aria-label="Verificação por SMS"
-          />
-          <button
-            type="button"
-            className={styles.rightAddon}
-            onClick={handleSendSms}
-            aria-label="Enviar código por SMS"
-          >
-            <MdTextsms className={styles.reactIcon}/>
-          </button>
-        </div>
-
-        <div className={styles.inputGroup}>
-          <span className={styles.leftAddon}>CPF</span>
-          <input
-            type="text"
-            name="cpf"
-            value={formData.cpf}
-            onChange={handleChange}
-            placeholder="CPF"
-            required
-            aria-label="CPF"
           />
         </div>
 
@@ -131,6 +194,18 @@ export default function Register() {
             required
             aria-label="Senha"
           />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <input
+            type={showPassword ? "text" : "password"}
+            name="repeatPassword"
+            value={formData.repeatPassword}
+            onChange={handleChange}
+            placeholder="Repetir Senha"
+            required
+            aria-label="Repetir Senha"
+          />
           <button
             type="button"
             className={styles.eyeButton}
@@ -138,7 +213,7 @@ export default function Register() {
             aria-pressed={showPassword}
             aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
           >
-            {showPassword ? <FaEye className={styles.reactIcon} /> : <FaRegEyeSlash className={styles.reactIcon}/>}
+            {showPassword ? <FaEye className={styles.reactIcon} /> : <FaRegEyeSlash className={styles.reactIcon} />}
           </button>
         </div>
 
