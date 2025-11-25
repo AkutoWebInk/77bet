@@ -1,0 +1,41 @@
+import { createContext, useContext, useState, useEffect } from "react";
+import { fetchProfile } from "../api/services/profile";
+
+const AuthContext = createContext();
+
+export default function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function checkAuth() {
+      const profile = await fetchProfile();
+      if (profile) setUser(profile);
+      setLoading(false);
+    }
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const devUser = {
+        id: 11,
+        firstName: "Akuto",
+        lastName: "Admin",
+        balance: 100
+    };
+    setUser(devUser);
+    setLoading(false);
+}, []);
+
+
+  const login = (profileData) => setUser(profileData);
+  const logout = () => setUser(null);
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export const useAuth = () => useContext(AuthContext);

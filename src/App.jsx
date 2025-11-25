@@ -2,9 +2,10 @@
 import './app.css';
 // React:
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
 // Layout:
 import Layout from './pages/Layout/Layout';
+// Components:
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // Pages:
 import Home from './pages/Home/Home';
 import Casino from './pages/Casino/Casino';
@@ -15,19 +16,22 @@ import Profile from './pages/Profile/Profile';
 
 function App() {
 
-  const[isLoggedIn, setIsLoggedIn] = useState(false)
 
   return (
     <Router>
       <Routes>
         
-        <Route element={<Layout isLoggedIn={isLoggedIn} />}>
+        <Route element={<Layout />}>
           
           <Route path="/" element={<Home />} />
           <Route path="/casino" element={<Casino />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
+
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>} />
 
         </Route>
         

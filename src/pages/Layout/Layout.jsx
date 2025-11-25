@@ -9,17 +9,19 @@ import { Outlet } from "react-router-dom";
 
 
 
-export default function Layout({isLoggedIn}){
-    return(
-        <section className={styles.layout}>
-            
-            <Header isLoggedIn={isLoggedIn}/>
+export default function Layout() {
+  return (
+    <section className={styles.layout}>
+      
+      <Header />
 
-            <section className={styles.content}> <Outlet/> </section>
-            
-            <Navbar/>
-            <Footer/>
+      <section className={styles.content}>
+        <Outlet />
+      </section>
+      
+      <Navbar />
+      <Footer />
 
-        </section>
-    )
+    </section>
+  );
 }
