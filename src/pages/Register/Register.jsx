@@ -1,15 +1,29 @@
-import React, { useState } from "react";
+// CSS:
 import styles from './Register.module.css';
+// React:
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { MdTextsms } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+
+// Promo:
 import headerImg from './assets/double-deposit.png';
 
 // API calls:
-import { register } from '../../api/services/register';
+import { requestRegister, formatCPF, formatBirthDate, formatPhone } from '../../api/services/register';
+import { requestLogin } from "../../api/services/login";
+import { useAuth } from "../../context/AuthProvider";
+
+
+
 
 export default function Register() {
-
+  // Auth status:
+  const {login} = useAuth();
+  const navigate = useNavigate();
+ 
+  // Register formulary payload:
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -22,49 +36,37 @@ export default function Register() {
     repeatPassword: ''
   });
 
+  // Peek password: 
   const [showPassword, setShowPassword] = useState(false);
 
+  // CPF/Email/Birth date formating and cleanup:
   const handleChange = (e) => {
     const { name, value } = e.target;
     let formattedValue = value;
-
-    if(name === 'cpf') {
-      // digits only, format 000.000.000-00
-      formattedValue = value.replace(/\D/g, '').slice(0, 11);
-      formattedValue = formattedValue.replace(/(\d{3})(\d)/, '$1.$2');
-      formattedValue = formattedValue.replace(/(\d{3})(\d)/, '$1.$2');
-      formattedValue = formattedValue.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    }
-
-    if(name === 'birthDate') {
-      // digits only, format dd/mm/yyyy
-      formattedValue = value.replace(/\D/g, '').slice(0, 8);
-      formattedValue = formattedValue.replace(/(\d{2})(\d)/, '$1/$2');
-      formattedValue = formattedValue.replace(/(\d{2})(\d)/, '$1/$2');
-    }
-
-    if(name === 'phone') {
-      // digits only, format as (XX) XXXXX-XXXX
-      formattedValue = value.replace(/\D/g, '').slice(0, 11);
-      if(formattedValue.length > 2) {
-        formattedValue = `(${formattedValue.slice(0,2)}) ${formattedValue.slice(2)}`;
-      }
-      if(formattedValue.length > 9) {
-        formattedValue = formattedValue.slice(0, 9) + '-' + formattedValue.slice(9);
-      }
-    }
-
+    // Formats and clears data to prepare for the API
+    if(name === 'cpf') {formattedValue = formatCPF(value)}
+    if(name === 'birthDate') {formattedValue = formatBirthDate(value)}
+    if(name === 'phone') {formattedValue = formatPhone(value)}
+    // Updates the last value key:value in the form
     setFormData(prev => ({ ...prev, [name]: formattedValue }));
   };
 
+  // Sends register request and auto logins if successfull:
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await register(formData);
-      console.log('register result:', result);
-    } catch (error) {
-      console.log('register error:', error);
+      const response = await requestRegister(formData);
+      console.log(response)
+
+      if(response?.status === 200){
+        const result = await requestLogin({email:formData.email, password:formData.password})
+        console.log(result)
+      
+        if(!result) return;
+      await login();
+      navigate('/profile');
     }
+  } catch (error) {console.log('register error:', error);}
   };
 
   const handleSendSms = (e) => {

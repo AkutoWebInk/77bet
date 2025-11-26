@@ -1,17 +1,18 @@
 // CSS:
 import styles from './Login.module.css';
-
 // React:
 import React, { useState } from "react";
 import { FaEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-
 // Promo:
 import headerImg from './assets/double-deposit.png';
-
 // API calls/Auth:
 import { requestLogin } from "../../api/services/login";
-import {useAuth} from '../../context/AuthProvider';
+import { useAuth } from '../../context/AuthProvider';
+// Login Warning
+import Warning from '../../components/Warning/Warning';
+
+
 
 export default function Login() {
   
@@ -37,8 +38,12 @@ export default function Login() {
   };
 
 
+
+
+
   return (
     <section className={styles.page}>
+      <Warning/>
       <div className={styles.header}>
         <img src={headerImg} className={styles.headerImg}/>
       </div>
