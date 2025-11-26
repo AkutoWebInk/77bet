@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+// CSS:
 import styles from './Login.module.css';
+
+// React:
+import React, { useState } from "react";
 import { FaEye, FaRegEyeSlash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+
+// Promo:
 import headerImg from './assets/double-deposit.png';
 
-
+// API calls/Auth:
+import { requestLogin } from "../../api/services/login";
+import {useAuth} from '../../context/AuthProvider';
 
 export default function Login() {
+  
+  const navigate = useNavigate()
+  const {login} = useAuth();
+
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -14,10 +26,16 @@ export default function Login() {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('login', form);
+    const result = await requestLogin(form);
+    if (!result) return;
+    
+    await login();
+    navigate('/profile');
+
   };
+
 
   return (
     <section className={styles.page}>

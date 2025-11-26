@@ -24,7 +24,7 @@ import { CiLogout } from "react-icons/ci";
 
 export default function Profile() {
   const { user, logout } = useAuth();   // get user from global auth
-
+  
   return (
     <section className={styles.page}>
       <img src={background} className={styles.background} />

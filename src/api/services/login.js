@@ -1,0 +1,22 @@
+import { API_PATH } from "../api";
+
+export async function requestLogin(data) {
+  try {
+    const response = await fetch(`${API_PATH}/users/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return await response.json();
+
+  } catch(err) {
+    console.error(err)
+    return null;
+  }
+}

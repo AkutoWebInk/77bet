@@ -16,19 +16,13 @@ export default function AuthProvider({ children }) {
     checkAuth();
   }, []);
 
-  useEffect(() => {
-    const devUser = {
-        id: 11,
-        firstName: "Akuto",
-        lastName: "Admin",
-        balance: 100
-    };
-    setUser(devUser);
-    setLoading(false);
-}, []);
+  const login = async ()=>{
+    const profile = await fetchProfile();
+    setUser(profile);
+    return true;
+  };
 
 
-  const login = (profileData) => setUser(profileData);
   const logout = () => setUser(null);
 
   return (
