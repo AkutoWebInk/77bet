@@ -6,16 +6,32 @@
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
+    
+    z-index: 100;
 
     background-color: #202020;
-    animation: slideIn .7s ease forwards;
+    animation: slideIn .9s ease forwards, highlightBorder .9s ease-in-out 4 forwards;
 }
 
 
 
 
-
 @keyframes slideIn{
-    0%{top:-100px}
-    100%{top: 65px}
+    0%{ top:-100px }
+    100%{ top:65px }
+}
+
+@keyframes highlightBorder{
+    0%{
+        border-color:rgba(250,69,0,1);
+        box-shadow:0 0 2px 1px rgba(250,69,0,.1);
+    }
+    50%{
+        border-color:rgba(250,69,0,.5);
+        box-shadow:0 0 2px 1px rgba(250,69,0,.9);
+    }
+    100%{
+        border-color:rgba(250,69,0,1);
+        box-shadow:0 0 2px 1px rgba(250,69,0,.1);
+    }
 }

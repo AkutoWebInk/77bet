@@ -25,6 +25,22 @@ export function formatBirthDate(date) {
   return date;
 }
 
+export function checkBirthDate(date) {
+  if (!date) return false;
+
+  // convert DD/MM/YYYY → YYYY-MM-DD
+  const parts = date.split('/');
+  if (parts.length !== 3) return false;
+
+  const isoDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+  const userBirthDate = new Date(isoDate);
+  const currentDate = new Date();
+
+  if (isNaN(userBirthDate.getTime())) return false;
+
+  return userBirthDate <= currentDate;
+}
+
 export function formatPhone(phone) {
   phone = phone.replace(/\D/g, '').slice(0, 11);
 
@@ -37,4 +53,4 @@ export function formatPhone(phone) {
   }
 
   return phone;
-}
+}   

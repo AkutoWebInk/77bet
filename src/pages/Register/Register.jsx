@@ -14,11 +14,17 @@ import headerImg from './assets/double-deposit.png';
 import { requestRegister, formatCPF, formatBirthDate, formatPhone } from '../../api/services/register';
 import { requestLogin } from "../../api/services/login";
 import { useAuth } from "../../context/AuthProvider";
+// Data chekers for the handlers:
+import { checkBirthDate } from '../../api/services/register';
+// Warnings:
+import {useWarning} from '../../context/WarningProvider';
 
 
 
 
 export default function Register() {
+  // Warnings
+  const {push} = useWarning();
   // Auth status:
   const {login} = useAuth();
   const navigate = useNavigate();
@@ -54,7 +60,16 @@ export default function Register() {
   // Sends register request and auto logins if successfull:
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+
     try {
+      const dateCheck = checkBirthDate(formData?.birthDate)
+      if(!dateCheck || dateCheck == false){
+        push('Data de nascimento nao pode ser maior do que a data atual.', 'error');
+        return;
+      }
+
       const response = await requestRegister(formData);
       console.log(response)
 

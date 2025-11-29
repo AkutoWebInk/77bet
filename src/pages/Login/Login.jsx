@@ -9,12 +9,14 @@ import headerImg from './assets/double-deposit.png';
 // API calls/Auth:
 import { requestLogin } from "../../api/services/login";
 import { useAuth } from '../../context/AuthProvider';
-// Login Warning
-import Warning from '../../components/Warning/Warning';
 
+// Warnings:
+import {useWarning} from '../../context/WarningProvider';
 
 
 export default function Login() {
+  // Warnings:
+  const {push} = useWarning();
   
   const navigate = useNavigate()
   const {login} = useAuth();
@@ -29,13 +31,18 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const result = await requestLogin(form);
-    if (!result) return;
-    
+
+    if (!result || result.error) {
+      push(result?.error || "Login Failed", "error");
+      return;
+    }
+
     await login();
     navigate('/profile');
-
   };
+
 
 
 
@@ -43,7 +50,6 @@ export default function Login() {
 
   return (
     <section className={styles.page}>
-      <Warning/>
       <div className={styles.header}>
         <img src={headerImg} className={styles.headerImg}/>
       </div>

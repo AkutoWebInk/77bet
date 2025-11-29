@@ -10,7 +10,9 @@ export async function requestLogin(data) {
     });
 
     if (!response.ok) {
-      return null;
+      const error = await response.json().catch(()=>null)
+      return {error: error?.detail || "Login Failed"};
+
     }
 
     return await response.json();
@@ -20,3 +22,4 @@ export async function requestLogin(data) {
     return null;
   }
 }
+  
