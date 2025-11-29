@@ -4,12 +4,11 @@
     border-radius: 10px;
 
     position: fixed;
-    top: 65px;
     left: 50%;
     transform: translateX(-50%);
 
     background-color: #202020;
-    animation: slideIn .7s ease infinite;
+    animation: slideIn .7s ease forwards;
 }
 
 
@@ -18,5 +17,5 @@
 
 @keyframes slideIn{
     0%{top:-100px}
-    100%{top: 50px}
+    100%{top: 65px}
 }
