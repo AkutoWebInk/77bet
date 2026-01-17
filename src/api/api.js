@@ -1,2 +1,2 @@
-export const API_PATH = 'http://192.168.1.101:8000/api';    //Uncomment for dev
-// export const API_PATH = 'https://www.coloryfe.com/api';  // Production
+// export const API_PATH = 'http://192.168.1.101:8000/api';    //Uncomment for dev
+export const API_PATH = 'https://www.coloryfe.com/api';  // Production
