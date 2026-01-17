@@ -20,7 +20,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        
         <Route element={<Layout />}>
           
           <Route path="/" element={<Home />} />
@@ -32,7 +31,6 @@ function App() {
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>} />
-
         </Route>
         
       </Routes>

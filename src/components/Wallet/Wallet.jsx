@@ -5,12 +5,14 @@ import styles from './Wallet.module.css';
 import deposit from './assets/deposit.png';
 // Auth/info:
 import { useAuth } from '../../context/AuthProvider';
-import { use } from 'react';
+import { useDeposit } from '../../context/DepositProvider';
 
 
 export default function Wallet() {
   
   const {user} = useAuth();
+  const {setIsVisible} = useDeposit();
+  
   
   return (
     <section className={styles.finance}>
@@ -23,7 +25,7 @@ export default function Wallet() {
       
       <div className={styles.buttons}>
         <button className={styles.withdraw}>Retirar</button>
-        <button className={styles.deposit}>Depositar</button>
+        <button className={styles.deposit} onClick={()=> setIsVisible(true)}> Depositar </button>
       </div>
     
     </section>
