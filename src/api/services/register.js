@@ -1,5 +1,6 @@
 import { API_PATH } from '../api';
 
+// API
 export async function requestRegister(data) {
   const response = await fetch(`${API_PATH}/users/register`, {
     method: 'POST',
@@ -10,6 +11,7 @@ export async function requestRegister(data) {
   return response.json();
 }
 
+// Helpers
 export function formatCPF(cpf) {
   cpf = cpf.replace(/\D/g, '').slice(0, 11);
   cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');

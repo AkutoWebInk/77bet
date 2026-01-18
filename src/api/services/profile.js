@@ -1,5 +1,7 @@
 import { API_PATH } from "../api";
+import { useState } from "react";
 
+// API
 export async function fetchProfile() {
   try {
     const res = await fetch(`${API_PATH}/users/profile`, {

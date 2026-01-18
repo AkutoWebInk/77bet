@@ -1,5 +1,6 @@
 import { API_PATH } from "../api";
 
+// API
 export async function requestLogin(data) {
   try {
     const response = await fetch(`${API_PATH}/users/login`, {
