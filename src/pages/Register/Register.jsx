@@ -14,13 +14,12 @@ import headerImg from './assets/double-deposit.png';
 import { requestRegister, formatCPF, formatBirthDate, formatPhone } from '../../api/services/register';
 import { requestLogin } from "../../api/services/login";
 import { useAuth } from "../../context/AuthProvider";
+
 // Data chekers for the handlers:
 import { checkBirthDate } from '../../api/services/register';
+
 // Warnings:
 import {useWarning} from '../../context/WarningProvider';
-
-
-
 
 export default function Register() {
   // Warnings

@@ -20,3 +20,4 @@ export async function fetchProfile() {
     return null;
   }
 }
+

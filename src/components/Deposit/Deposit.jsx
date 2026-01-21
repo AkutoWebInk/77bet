@@ -1,93 +1,159 @@
-// CSS:
+// CSS
 import styles from './Deposit.module.css';
+
 // Functions
 import { formatValue } from '../../api/services/deposit';
 
+// API calls
+import { requestDepoit } from '../../api/services/deposit';
 
-//Icons
+// Icons
 import { IoCloseOutline } from "react-icons/io5";
+import { IoCopyOutline } from "react-icons/io5";
 import { useEffect, useState } from 'react';
-import favicon from  './assets/favicon.png';
+import favicon from './assets/favicon.png';
 import pixImg from './assets/pix.png';
 
+export default function Deposit({ visible, onClose }) {
+    const [placeholder] = useState('Valor');
+    const [value, setValue] = useState('');
+    
+    const [depositResult, setDepositResult] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    export default function Deposit({visible, onClose}){
-        // <input type="text" placeholder='Valor' />
-        const [placeholder, setPlaceholder] = useState('Valor');
-        const [value, setValue] = useState('');
+    // Deposit payload:
+    const [payload, setPayload] = useState({
+        amount: 0,
+        provider: 'woovi',
+    });
 
-        // {visible, onClose} 
-        useEffect(() => {
-            if (visible) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
+    // Component visibility:
+    useEffect(() => {
+        document.body.style.overflow = visible ? 'hidden' : 'auto';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [visible]);
+
+    if (!visible) return null;
+
+    function handleChange(e) {
+        const formatted = 'R$ '+ formatValue(e.target.value);
+        setValue(formatted);
+
+        const numeric = Number(formatted.replace(/\D/g, ''));
+        setPayload(prev => ({...prev, amount: numeric }));
+    }
+
+    function selectValue(amount) {
+        setValue('R$ ' + formatValue(String(amount)));
+        setPayload(prev => ({...prev, amount}));
+    }
+
+    async function handleDeposit() {
+        setLoading(true);
+        try {
+            const response = await requestDepoit(payload);
+            if (response) {
+                setDepositResult(response);
             }
-            return () => {
-                document.body.style.overflow = 'auto';
-            };
-        }, [visible]);
-
-        if (!visible) return null;
-        
-
-
-        function handleChange(e){
-            setValue(formatValue(e.target.value));
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
         }
-        function selectValue(amount) {
-            setValue(formatValue(String(amount)));
-        }
-        
+    }
+
+    function handleClose() {
+        setDepositResult(null);
+        setValue('');
+        onClose();
+    }
+
     return (
-        <section className={styles.component}>
-
-            {/* Close Button */}
-            <button className={styles.closeButton} onClick={onClose}><IoCloseOutline/></button>
-                
-            {/* 'Depositar' */}
-            <div className={styles.title}>
-                <span> Depositar </span>
-                <p> Adicione saldo à sua conta</p>
-            </div>
-
-            {/* Woovi Icon */}
-            <div className={styles.provider}>
-                <img className={styles.wooviIcon} src={favicon}/>
-                <span>Woovi</span>
-            </div>
-
-            {/* Information */}
-            <div className={styles.information}>
-                <div>
-                    <p> Método de pagamento </p>
-                    <span> Woovi </span>
-                    <img className={styles.pixIcon} src={pixImg}/>
-                </div>
-                <div>
-                    <p> Valor Minimo </p>
-                    <span> R$10,00</span>
-                </div>
-            </div>
-
-
-            {/* Interactives */}
-            <span className={styles.valueInfo}>Escolha ou digite o valor desejado:</span>
-            <input type="text" value={value} placeholder={placeholder} onChange={handleChange} />
+        <section className={styles.modalOverlay}>
+            <button className={styles.closeButton} onClick={handleClose}>
+                <IoCloseOutline />
+            </button>
             
-            <div className={styles.interactives}>
-                <button onClick={()=> selectValue(5000)}>R$ 50 </button>
-                <button onClick={()=> selectValue(10000)}>R$ 100</button>
-                <button onClick={()=> selectValue(15000)}>R$ 150</button>
-                <button onClick={()=> selectValue(25000)}>R$ 250</button>
-                <button onClick={()=> selectValue(50000)}>R$ 500</button>
-                <button onClick={()=> selectValue(100000)}>R$ 1.000</button>
-                <button onClick={()=> selectValue(200000)}>R$ 2.000</button>
-                <button onClick={()=> selectValue(500000)}>R$ 5.000</button>
-                <button onClick={()=> selectValue(1000000)}>R$ 10.000</button>
-            </div>
-            <button className={styles.generatePix}> Gerar PIX </button>
+            {depositResult ? (
+                <div className={styles.result}>
+                    <div className={styles.header}>
+                        <img className={styles.resultIcon} src={favicon} alt="Woovi" />
+                        <span className={styles.headerTitle}>Pagamento Gerado!</span>
+                        <p className={styles.headerSubtitle}>Escaneie o QR Code abaixo:</p>
+                    </div>
+                    <span className={styles.resultAmount}>R$ {formatValue(String(depositResult.data.amount))} </span>
 
+                    <img src={depositResult.data.qrCode} className={styles.resultQrCode}/>
+
+                    <span className={styles.resultText}>Detalhes da Transação</span>
+                    <span className={styles.resultText}> 
+                        Destinatário:
+                         <br />
+                        <span className={styles.resultSubtext}> 77bet LTDA </span> 
+                    </span>   
+                    <span className={styles.resultText}>
+                        Identificador: 
+                        <br />
+                        <span className={styles.resultSubtext}> {depositResult.data.providerId} </span>    
+                    </span>
+
+                    <section className={styles.resultDetails}>
+                        <div className={styles.resultCopy}>
+                            <input readOnly type="text" className={styles.resultInput} value={depositResult.data.brCode} onClick={(e) => e.target.select()} />
+                            <button className={styles.resultCopyButton} onClick={() => navigator.clipboard.writeText(depositResult.data.brCode)}><IoCopyOutline /></button>
+                        </div>
+                        <span className={styles.resultInfo}>Copie o codigo do QR Code, abra o app do seu banco e pague via Pix Copia e Cola</span>
+                    </section>
+                </div>
+            ) : (
+                <>
+                    <div className={styles.header}>
+                        <span className={styles.headerTitle}>Depositar</span>
+                        <p className={styles.headerSubtitle}>Adicione saldo à sua conta.</p>
+                    </div>
+
+                    <div className={styles.provider}>
+                        <img className={styles.providerIcon} src={favicon} alt="Woovi" />
+                        <span className={styles.providerLabel}>Woovi</span>
+                    </div>
+
+                    <div className={styles.details}>
+                        <div className={styles.detailsBox}>
+                            <p className={styles.detailsLabel}>Método de pagamento:</p>
+                            <span className={styles.detailsValue}>Woovi</span>
+                            <img className={styles.detailsIcon} src={pixImg} alt="Pix" />
+                        </div>
+                        <div className={styles.detailsBox}>
+                            <p className={styles.detailsLabel}>Valor minimo:</p>
+                            <span className={styles.detailsValue}>R$10,00</span>
+                        </div>
+                    </div>
+
+                    <span className={styles.amount}>
+                        Escolha ou digite o valor desejado:
+                    </span>
+
+                    <input type="text" className={styles.amountInput} value={value} placeholder={placeholder} onChange={handleChange}/>
+
+                    <div className={styles.amountSelector}>
+                        <button className={styles.amountButton} onClick={() => selectValue(5000)}>R$ 50</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(10000)}>R$ 100</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(15000)}>R$ 150</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(25000)}>R$ 250</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(50000)}>R$ 500</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(100000)}>R$ 1.000</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(200000)}>R$ 2.000</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(500000)}>R$ 5.000</button>
+                        <button className={styles.amountButton} onClick={() => selectValue(1000000)}>R$ 10.000</button>
+                    </div>
+
+                    <button className={styles.confirmButton} onClick={handleDeposit} disabled={payload.amount < 1000 || loading}>
+                        {loading ? 'Gerando...' : 'Gerar PIX'}
+                    </button>
+                </>
+            )}
         </section>
-    )
+    );
 }
