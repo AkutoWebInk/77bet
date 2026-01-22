@@ -49,6 +49,7 @@ export default function Withdrawal({ visible, onClose }) {
         }
     }
 
+
     // Component visibility:
     useEffect(() => {
         document.body.style.overflow = visible ? 'hidden' : 'auto';
@@ -72,6 +73,7 @@ export default function Withdrawal({ visible, onClose }) {
         setValue('');
         onClose();
     }
+
 
 
     return (
