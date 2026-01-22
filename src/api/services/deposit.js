@@ -1,13 +1,14 @@
 import { API_PATH2 } from "../api";
 
 // API
-export async function requestDepoit(data) {
-  const response = await fetch(`${API_PATH2}/transactions/deposit`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(data)
-  });
+export async function requestDeposit(data) {
+  const response = await fetch(`${API_PATH2}/transactions/deposit`, 
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(data)
+      });
   
   const result = await response.json();
   console.log('Deposit Result', result);

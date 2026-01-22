@@ -5,7 +5,7 @@ import styles from './Deposit.module.css';
 import { formatValue } from '../../api/services/deposit';
 
 // API calls
-import { requestDepoit } from '../../api/services/deposit';
+import { requestDeposit } from '../../api/services/deposit';
 
 // Icons
 import { IoCloseOutline } from "react-icons/io5";
@@ -15,9 +15,9 @@ import favicon from './assets/favicon.png';
 import pixImg from './assets/pix.png';
 
 export default function Deposit({ visible, onClose }) {
+    
     const [placeholder] = useState('Valor');
     const [value, setValue] = useState('');
-    
     const [depositResult, setDepositResult] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -27,6 +27,7 @@ export default function Deposit({ visible, onClose }) {
         provider: 'woovi',
     });
 
+
     // Component visibility:
     useEffect(() => {
         document.body.style.overflow = visible ? 'hidden' : 'auto';
@@ -34,8 +35,9 @@ export default function Deposit({ visible, onClose }) {
             document.body.style.overflow = 'auto';
         };
     }, [visible]);
-
     if (!visible) return null;
+
+
 
     function handleChange(e) {
         const formatted = 'R$ '+ formatValue(e.target.value);
@@ -44,16 +46,20 @@ export default function Deposit({ visible, onClose }) {
         const numeric = Number(formatted.replace(/\D/g, ''));
         setPayload(prev => ({...prev, amount: numeric }));
     }
-
     function selectValue(amount) {
         setValue('R$ ' + formatValue(String(amount)));
         setPayload(prev => ({...prev, amount}));
+    }
+    function handleClose() {
+        setDepositResult(null);
+        setValue('');
+        onClose();
     }
 
     async function handleDeposit() {
         setLoading(true);
         try {
-            const response = await requestDepoit(payload);
+            const response = await requestDeposit(payload);
             if (response) {
                 setDepositResult(response);
             }
@@ -64,11 +70,7 @@ export default function Deposit({ visible, onClose }) {
         }
     }
 
-    function handleClose() {
-        setDepositResult(null);
-        setValue('');
-        onClose();
-    }
+
 
     return (
         <section className={styles.modalOverlay}>
