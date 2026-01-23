@@ -43,8 +43,8 @@ export default function Deposit({ visible, onClose }) {
         const formatted = 'R$ '+ formatValue(e.target.value);
         setValue(formatted);
 
-        const numeric = Number(formatted.replace(/\D/g, ''));
-        setPayload(prev => ({...prev, amount: numeric }));
+        const numeric = Number(formatted.replace(/\D/g, ''))
+        setPayload(prev => ({...prev, amount: numeric}));
     }
     function selectValue(amount) {
         setValue('R$ ' + formatValue(String(amount)));
