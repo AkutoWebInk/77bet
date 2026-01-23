@@ -151,3 +151,10 @@
   border: none;
   background-color: #121212;
 }
+.inputGroup input:-webkit-autofill,
+.inputGroup input:-webkit-autofill:hover, 
+.inputGroup input:-webkit-autofill:focus, 
+.inputGroup input:-webkit-autofill:active{
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: white !important;
+}

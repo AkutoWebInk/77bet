@@ -24,10 +24,17 @@ export default function Withdrawal({ visible, onClose }) {
     const [withdrawalResult, setWithdrawalResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [amount, setAmount] = useState(0);
+    const [error, setError] = useState('');
 
     async function handleWithdrawal() {
-        if (!amount || amount <= 0) return alert('Informe um valor válido');
-        if (!pixKey) return alert('Informe a sua chave PIX');
+        if (!amount || amount <= 0) {
+            setError('Informe um valor válido');
+            return;
+        }
+        if (!pixKey) {
+            setError('Informe a sua chave PIX');
+            return;
+        }
 
         setLoading(true);
         try {
@@ -67,6 +74,21 @@ export default function Withdrawal({ visible, onClose }) {
 
         const numeric = Number(formatted.replace(/\D/g, ''));
         setAmount(numeric);
+    }
+    function handlePixKeyChange(e) {
+        setPixKey(e.target.value);
+        if (error) {
+            setError('');
+        }
+    }
+    function handleAmountChange(e) {
+        const formatted = 'R$ ' + formatValue(e.target.value);
+        setValue(formatted);
+        const numeric = Number(formatted.replace(/\D/g, ''));
+        setAmount(numeric);
+        if (error) {
+            setError('');
+        }
     }
     function handleClose() {
         setWithdrawalResult(null);
@@ -129,8 +151,9 @@ export default function Withdrawal({ visible, onClose }) {
                     </div>
                 
                     
-                    <input type="text" className={styles.amountInput} value={value} placeholder={placeholder} onChange={handleChange}/>
-                    <input type="text" className={styles.pixInput} value={pixKey} onChange={(e) => setPixKey(e.target.value)} placeholder={`Informe a sua chave PIX ( ${pixKeyType} )`}/>
+                    <input type="text" className={styles.amountInput} value={value} placeholder={placeholder} onChange={handleAmountChange}/>
+                    <input type="text" className={styles.pixInput} value={pixKey} onChange={handlePixKeyChange} placeholder={`Informe a sua chave PIX ( ${pixKeyType} )`}/>
+                    {error && <p className={styles.errorMessage}>{error}</p>}
                     
                     <div className={styles.pixSelector}>
                         <button className={`${styles.pixSelectorButton} ${pixKeyType === 'CPF' ? styles.active : ''}`} onClick={() => setPixKeyType('CPF')}>CPF</button>

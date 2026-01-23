@@ -23,4 +23,9 @@ body {
 button, a, input {
   -webkit-tap-highlight-color: transparent; /* removes mobile blue highlight */
   outline: none; /* removes focus outline */
+  transition: transform 0.1s ease; /* smooth transition for the click effect */
+}
+
+button:active {
+  transform: scale(0.98); /* scales the button down slightly when clicked */
 }

@@ -5,6 +5,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.1s ease;
+}
+
+.component:active {
+    transform: scale(0.98);
 }
 
 .picture{

@@ -264,6 +264,13 @@
     text-shadow: 0 0 10px #050505;
 }
 
+.errorMessage {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+}
+
 
 @keyframes fadeIn {
     0% {
