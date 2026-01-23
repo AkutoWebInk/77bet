@@ -5,10 +5,15 @@
     {
       "src": "/icon.png",
       "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/mobile-icon.png",
+      "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/icon.png",
+      "src": "/mobile-icon.png",
       "type": "image/png",
       "sizes": "512x512"
     }
