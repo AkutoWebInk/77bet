@@ -5,10 +5,11 @@ import styles from './Withdrawal.module.css';
 import { formatValue } from '../../api/services/deposit';
 
 // API calls
-import { requestWithdrawal } from '../../api/services/withdrawal';
+import { requestWithdrawal, formatPixKey, cleanPixKey, limitAmount } from '../../api/services/withdrawal';
 
 // Icons
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline, IoCheckmarkCircleOutline, IoAlertCircleOutline } from "react-icons/io5";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthProvider';
 import favicon from './assets/favicon.png';
@@ -40,10 +41,8 @@ export default function Withdrawal({ visible, onClose }) {
         try {
             const payload = {
                 amount,
-                pixKey,
-                pixKeyType,
-                method: 'pix',
-                provider: 'woovi'
+                pixKey: cleanPixKey(pixKey, pixKeyType),
+                pixKeyType
             };
             const response = await requestWithdrawal(payload);
             if (response) {
@@ -68,24 +67,20 @@ export default function Withdrawal({ visible, onClose }) {
 
 
 
-    function handleChange(e) {
-        const formatted = 'R$ ' + formatValue(e.target.value);
-        setValue(formatted);
-
-        const numeric = Number(formatted.replace(/\D/g, ''));
-        setAmount(numeric);
-    }
     function handlePixKeyChange(e) {
-        setPixKey(e.target.value);
+        const formatted = formatPixKey(e.target.value, pixKeyType);
+        setPixKey(formatted);
         if (error) {
             setError('');
         }
     }
     function handleAmountChange(e) {
-        const formatted = 'R$ ' + formatValue(e.target.value);
+        const numeric = limitAmount(e.target.value, user?.balance || 0);
+        const formatted = 'R$ ' + formatValue(String(numeric));
+        
         setValue(formatted);
-        const numeric = Number(formatted.replace(/\D/g, ''));
         setAmount(numeric);
+        
         if (error) {
             setError('');
         }
@@ -108,26 +103,46 @@ export default function Withdrawal({ visible, onClose }) {
                 <div className={styles.result}>
 
                     <div className={styles.header}>
-                        <span className={styles.headerTitle}>Saque Solicitado!</span>
-                        <p className={styles.headerSubtitle}>Sua solicitação foi recebida</p>
+                        {withdrawalResult.status === 200 ? (
+                            <IoCheckmarkCircleOutline className={styles.successIcon} />
+                        ) : (
+                            <IoAlertCircleOutline className={styles.errorIcon} />
+                        )}
+                        <span className={styles.headerTitle}>{withdrawalResult.status === 200 ? 'Saque Solicitado!' : 'Erro no Saque'}</span>
+                        <p className={styles.headerSubtitle}>{withdrawalResult.status === 200 ? 'Sua solicitação foi recebida' : 'Não foi possível processar'}</p>
                     </div>
-                    <span className={styles.resultAmount}>R$ {formatValue(String(withdrawalResult.data?.amount || amount))} </span>
 
-                    <span className={styles.resultDetails}>Detalhes do Saque</span>
-                    <span className={styles.resultText}> 
-                        Método:
-                         <br />
-                        <span className={styles.resultSubtext}> {withdrawalResult.data?.method || 'PIX'} </span> 
-                    </span>   
-                    <span className={styles.resultText}>
-                        Status: 
-                        <br />
-                        <span className={styles.resultSubtext}> {withdrawalResult.data?.status || 'Pendente'} </span>    
-                    </span>
+                    {withdrawalResult.status === 200 ? (
+                        <>
+                            <span className={styles.resultAmount}>R$ {formatValue(String(withdrawalResult.detail?.value || amount))} </span>
 
-                    <section className={styles.resultInfo}>
-                        <span className={styles.resultInfoText}>Você receberá o valor em sua conta PIX em até 24 horas úteis.</span>
-                    </section>
+                            <span className={styles.resultDetails}>Detalhes do Saque</span>
+                            <span className={styles.resultText}> 
+                                Método:
+                                <br />
+                                <span className={styles.resultSubtext}> PIX </span> 
+                            </span>   
+                            <span className={styles.resultText}>
+                                Status: 
+                                <br />
+                                <span className={styles.resultSubtext}> {withdrawalResult.detail?.status || 'PENDENTE'} </span>    
+                            </span>
+                            <span className={styles.resultText}>
+                                Destino: 
+                                <br />
+                                <span className={styles.resultSubtext}> {withdrawalResult.detail?.destination} </span>    
+                            </span>
+
+                            <section className={styles.resultInfo}>
+                                <span className={styles.resultInfoText}>Você receberá o valor em sua conta PIX em até 24 horas úteis.</span>
+                            </section>
+                        </>
+                    ) : (
+                        <section className={styles.resultInfo}>
+                            <span className={styles.errorMessage}>{withdrawalResult.error?.message || 'Erro interno ao processar o saque.'}</span>
+                            <p className={styles.resultInfoText} style={{ marginTop: '10px' }}>Não se preocupe, você não será debitado.</p>
+                        </section>
+                    )}
 
                     <button className={styles.backButton} onClick={handleClose}>
                         Voltar
@@ -156,10 +171,10 @@ export default function Withdrawal({ visible, onClose }) {
                     {error && <p className={styles.errorMessage}>{error}</p>}
                     
                     <div className={styles.pixSelector}>
-                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'CPF' ? styles.active : ''}`} onClick={() => setPixKeyType('CPF')}>CPF</button>
-                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'Telefone' ? styles.active : ''}`} onClick={() => setPixKeyType('Telefone')}>Celular</button>
-                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'E-mail' ? styles.active : ''}`} onClick={() => setPixKeyType('E-mail')}>E-mail</button>
-                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'Aleatório' ? styles.active : ''}`} onClick={() => setPixKeyType('Aleatório')}>Chave Aleatória</button>
+                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'CPF' ? styles.active : ''}`} onClick={() => { setPixKeyType('CPF'); setPixKey(''); }}>CPF</button>
+                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'Telefone' ? styles.active : ''}`} onClick={() => { setPixKeyType('Telefone'); setPixKey(''); }}>Celular</button>
+                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'E-mail' ? styles.active : ''}`} onClick={() => { setPixKeyType('E-mail'); setPixKey(''); }}>E-mail</button>
+                        <button className={`${styles.pixSelectorButton} ${pixKeyType === 'Aleatório' ? styles.active : ''}`} onClick={() => { setPixKeyType('Aleatório'); setPixKey(''); }}>Chave Aleatória</button>
                     </div>
                     <div className={styles.infoBox}>
                         <span>Atenção:</span>
@@ -167,7 +182,7 @@ export default function Withdrawal({ visible, onClose }) {
                     </div>
                     
                     <button className={styles.confirmButton} onClick={handleWithdrawal} disabled={loading}>
-                        {loading ? 'Processando...' : 'Solicitar Saque'}
+                        {loading ? <AiOutlineLoading3Quarters className={styles.spinner} /> : 'Solicitar Saque'}
                     </button>
                 </>
             )}

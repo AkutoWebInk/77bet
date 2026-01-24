@@ -14,12 +14,14 @@ import ExpandingButton from '../../components/ExpandingButton/ExpandingButton';
 import Wallet from '../../components/Wallet/Wallet';
 import TransactionsHistory from '../../components/Transactions/Transactions';
 import ClaimCoupons from '../../components/Coupons/Coupons';
+import Settings from '../../components/Settings/Settings';
 
 // Icons
 import cashFlow from './assets/cash-flow.png';
 import invitation from './assets/invitation.png';
 import coupon from './assets/coupon.png';
 import support from './assets/support.png';
+import settings from './assets/user.png'; // Using user icon as placeholder for settings
 import { CiLogout } from "react-icons/ci";
 
 export default function Profile() {
@@ -30,14 +32,22 @@ export default function Profile() {
       <img src={background} className={styles.background} />
 
       <section className={styles.profile}>
-        <img src={profilePic} className={styles.profilePic} />
-        <span>{user?.firstName} {user?.lastName}</span>
-        <p>ID: {user?.id}</p>
-        <Wallet />
+        <div className={styles.profileHeader}>
+            <img src={profilePic} className={styles.profilePic} />
+            <div className={styles.mainInfo}>
+                <div className={styles.profileInfo}>
+                    <span className={styles.userName}>{user?.firstName} {user?.lastName}</span>
+                    <p className={styles.userId}>ID: {user?.id}</p>
+                </div>
+            </div>
+        </div>
       </section>
+
+      <Wallet />
 
       <VIP vipProgress={90} />
 
+      <ExpandingButton icon={settings} text="Configurações" content={<Settings />} />
       <ExpandingButton icon={cashFlow} text="Relatórios" content={<TransactionsHistory />} />
       <ExpandingButton icon={invitation} text="Convide & Ganhe" />
       <ExpandingButton icon={coupon} text="Resgatar Cupom" content={<ClaimCoupons />} />

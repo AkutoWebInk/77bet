@@ -1,62 +1,48 @@
 // CSS:
 import styles from './VIP.module.css';
-// React:
-import React, { useState, useEffect } from "react";
-// Components
-import { MdExpandMore } from "react-icons/md";
-// VIP Icons
+// VIP Icon
 import vip from './assets/vip.png';
 
+const VIP_LEVELS = [
+    { name: 'Bronze', minPoints: 0 },
+    { name: 'Prata', minPoints: 1000 },
+    { name: 'Ouro', minPoints: 5000 },
+    { name: 'Platina', minPoints: 15000 },
+    { name: 'Diamante', minPoints: 50000 },
+    { name: 'Mestre', minPoints: 100000 },
+];
 
+const getCurrentLevelInfo = (progress) => {
+    const levelIndex = Math.floor(progress / 20);
+    const currentLevel = VIP_LEVELS[levelIndex] || VIP_LEVELS[0];
+    const nextLevel = VIP_LEVELS[levelIndex + 1] || VIP_LEVELS[VIP_LEVELS.length - 1];
+    return { currentLevel, nextLevel };
+};
 
-
-
-
-
-
-export default function VIP({vipProgress}){
-
-    // Progress-bar controls
-    const[progress, setProgress] = useState(vipProgress);
-    useEffect(()=>{setProgress(vipProgress);},[vipProgress]);
-
-    //Expanding controls
-    const[expanded, setExpanded] = useState(false);
+export default function VIP({ vipProgress }) {
+    const { currentLevel, nextLevel } = getCurrentLevelInfo(vipProgress);
 
     return (
         <section className={styles.component}>
+            <div className={styles.header}>
+                <img src={vip} className={styles.vipIcon} alt="VIP" />
+                <h3 className={styles.title}>Clube VIP</h3>
+            </div>
 
+            <div className={styles.levels}>
+                <span className={styles.levelName}>{currentLevel.name}</span>
+                <span className={styles.levelNameNext}>{nextLevel.name}</span>
+            </div>
 
-            <section className={styles.container}>
-                <img src={vip} className={styles.vip}/>
-
-                <div className={styles.bar}>
-                    <div className={styles.progress} style={{width: `${progress}%`}}> </div>
+            <div className={styles.progressBarContainer} title={`Progresso: ${vipProgress}%`}>
+                <div className={styles.progressBar} style={{ width: `${vipProgress}%` }}>
+                    <span className={styles.progressText}>{vipProgress}%</span>
                 </div>
-            </section>
-            <section className={styles.under}>
-                <button className={`${styles.button} ${expanded? styles.expanded : styles.collapsed}`} onClick={()=> setExpanded(prev => !prev)}>
-                        <span>Entenda o VIP</span>
-                    <>
-                        <MdExpandMore  className={styles.icon}/>
-                    </>
-                    <div>
-                    <p>
-                        Um VIP é um jogador especial que recebe benefícios exclusivos por sua fidelidade, 
-                        como bônus diferenciados, 
-                        limites maiores de depósito e saque, 
-                        promoções especiais e atendimento personalizado.
-                        <br />
-                        Para aumentar o nível VIP, 
-                        o usuário precisa jogar com mais frequência e/ou aumentar o valor das apostas. 
-                        
-                        Quanto maior o volume de <strong>apostas</strong>, atividade e <strong>depositos</strong> na plataforma, 
-                        mais pontos de fidelidade ou status VIP o jogador acumula, 
-                        avançando para níveis com benefícios maiores.
-                    </p>
-                    </div>
-                </button>
-            </section>
+            </div>
+            
+            <p className={styles.infoText}>
+                Continue jogando para desbloquear recompensas exclusivas!
+            </p>
         </section>
-    )
+    );
 }

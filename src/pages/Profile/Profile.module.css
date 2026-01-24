@@ -14,32 +14,58 @@
 /* Profile */
 .profile {
   margin-top: 20px;
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   color: #fff;
-  box-shadow: 0 0 12px 6px rgba(0, 0, 0, 0.2);
-  background-color: #101010;
-  gap: 5px;
-  padding: 0px 0 20px 0;
-  border-radius: 3px;
+  background: linear-gradient(180deg, #101010, #050505);
+  border: 1px solid #202020;
+  gap: 25px; /* Increased gap */
+  padding: 20px 20px 25px 20px; /* Increased bottom padding */
+  border-radius: 8px;
   z-index: 1;
+  box-sizing: border-box;
 }
 
-.profile span,
-.profile p {
-  margin: 0;
+.profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.mainInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 1; /* Allow this container to grow */
+}
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.userName {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.userId {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
 }
 
 /* Profile picture */
 .profilePic {
-  height: 100px;
-  width: 100px;
-  object-fit: contain;
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
   border-radius: 50%;
-  box-shadow: 0 0 12px 6px rgba(0, 0, 0, 0.5);
+  border: 3px solid orangered;
+  box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
 }
 
 /* Logout Button */
@@ -69,24 +95,16 @@
 /* Animations */
 @keyframes lavaFlow {
   0% {
-    filter: brightness(1) saturate(1.2) drop-shadow(0 0 6px rgba(255, 69, 0, 0.6));
-    transform: scale(1) translateY(0) rotate(30deg);
-  }
-  25% {
-    filter: brightness(1.2) saturate(1.4) drop-shadow(0px 0px 6px rgba(255, 100, 0, 0.8));
-    transform: scale(1.02) translateY(-1%) rotate(30deg);
+    transform: scale(1.0) translateY(0) rotate(30deg);
+    opacity: 0.8;
   }
   50% {
-    filter: brightness(1.3) saturate(1.6) drop-shadow(0 12px 9px rgba(255, 0, 0, 1));
-    transform: scale(1.03) translateY(1%) rotate(30deg);
-  }
-  75% {
-    filter: brightness(1.1) saturate(1.3) drop-shadow(0 0 8px rgba(255, 69, 0, 0.8));
-    transform: scale(1.01) translateY(-0.5%) rotate(30deg);
+    transform: scale(1.05) translateY(-5px) rotate(30deg);
+    opacity: 1;
   }
   100% {
-    filter: brightness(1) saturate(1.2) drop-shadow(0 4px 6px rgba(255, 69, 0, 0.6));
-    transform: scale(1) translateY(0) rotate(30deg);
+    transform: scale(1.0) translateY(0) rotate(30deg);
+    opacity: 0.8;
   }
 }
 .background{

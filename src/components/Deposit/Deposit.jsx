@@ -20,11 +20,11 @@ export default function Deposit({ visible, onClose }) {
     const [value, setValue] = useState('');
     const [depositResult, setDepositResult] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     // Deposit payload:
     const [payload, setPayload] = useState({
-        amount: 0,
-        provider: 'woovi',
+        amount: 0
     });
 
 
@@ -70,6 +70,29 @@ export default function Deposit({ visible, onClose }) {
         }
     }
 
+    function handleCopy() {
+        const text = depositResult?.data?.brCode;
+        if (!text) return;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text);
+        } else {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+        
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    }
+
 
 
     return (
@@ -104,7 +127,9 @@ export default function Deposit({ visible, onClose }) {
                     <section className={styles.resultDetails}>
                         <div className={styles.resultCopy}>
                             <input readOnly type="text" className={styles.resultInput} value={depositResult.data.brCode} onClick={(e) => e.target.select()} />
-                            <button className={styles.resultCopyButton} onClick={() => navigator.clipboard.writeText(depositResult.data.brCode)}><IoCopyOutline /></button>
+                            <button className={`${styles.resultCopyButton} ${copied ? styles.copied : ''}`} onClick={handleCopy}>
+                                {copied ? 'Copiado!' : <IoCopyOutline />}
+                            </button>
                         </div>
                         <span className={styles.resultInfo}>Copie o codigo do QR Code, abra o app do seu banco e pague via Pix Copia e Cola</span>
                     </section>
