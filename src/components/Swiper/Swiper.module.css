@@ -1,52 +1,71 @@
 .swiper {
     width: 100%;
-    height: 80px;
+    padding: 10px 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     overflow-x: auto;
-    overflow-y: hidden;
-    gap: 5px;
-
+    gap: 12px;
+    box-sizing: border-box;
 }
+
 .swiper::-webkit-scrollbar {
-        display: none;
-        }
+    display: none;
+}
 
 .swiper button {
     flex: 0 0 auto;
-    height: 90%;
     width: 70px;
-    padding: 5px;
+    height: 70px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    justify-content: center;
     position: relative;
-    background-color: transparent;
-    border: 0px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    border-radius: 3px;
-    /* animation: slideIn .9s ease-in-out forwards; */
+    border-radius: 5px;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.swiper button:hover {
+    background-color: rgba(255, 69, 0, 0.1);
+    border-color: rgba(255, 69, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.swiper button:active {
+    transform: scale(0.95);
 }
 
 .icon {
-    width: 45px;
-    height: 45px;
-    filter: drop-shadow(0px 2px 6px rgba(0,0,0,.9));
+    width: 32px;
+    height: 32px;
+    margin-bottom: 20px; /* Space for text */
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
     object-fit: contain;
+    transition: transform 0.2s;
+}
+
+.swiper button:hover .icon {
+    transform: scale(1.1);
 }
 
 .swiper button span {
     width: 100%;
-    font-size: 14px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
     white-space: nowrap;
     position: absolute;
-    bottom: 3px;
+    bottom: 8px;
     left: 0;
-    z-index: 1;
-    color: rgba(255,255,255,.7);
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.5px;
 }
 
 @keyframes fadeIn {

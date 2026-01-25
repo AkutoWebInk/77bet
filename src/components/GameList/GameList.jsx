@@ -17,7 +17,11 @@ export default function GameList({ title, producerIcon, games }) {
     <section className={styles.container}>
       
       <NavLink to='' className={styles.producerButton}>
-        <img src={producerIcon} className={styles.producerIcon} />
+        {producerIcon ? (
+          <img src={producerIcon} className={styles.producerIcon} alt="Producer" />
+        ) : (
+          <span className={styles.title}>{title}</span>
+        )}
         <IoIosArrowForward className={styles.buttonArrow} />
       </NavLink>
 

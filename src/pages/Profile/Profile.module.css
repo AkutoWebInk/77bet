@@ -22,8 +22,9 @@
   border: 1px solid #202020;
   gap: 25px; /* Increased gap */
   padding: 20px 20px 25px 20px; /* Increased bottom padding */
-  border-radius: 8px;
+  border-radius: 5px;
   z-index: 1;
+  position: relative;
   box-sizing: border-box;
 }
 
