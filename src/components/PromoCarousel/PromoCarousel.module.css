@@ -13,6 +13,13 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
+@media (min-width: 1024px) {
+  .swiper {
+    aspect-ratio: 16 / 5;
+    margin-top: 0;
+  }
+}
+
 .swiper img {
   width: 100%;
   height: 100%;

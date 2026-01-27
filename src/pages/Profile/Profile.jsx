@@ -31,32 +31,43 @@ export default function Profile() {
     <section className={styles.page}>
       <img src={background} className={styles.background} />
 
-      <section className={styles.profile}>
-        <div className={styles.profileHeader}>
-            <img src={profilePic} className={styles.profilePic} />
-            <div className={styles.mainInfo}>
-                <div className={styles.profileInfo}>
-                    <span className={styles.userName}>{user?.firstName} {user?.lastName}</span>
-                    <p className={styles.userId}>ID: {user?.id}</p>
+      <div className={styles.desktopLayout}>
+        <div className={styles.leftColumn}>
+          <section className={styles.profile}>
+            <div className={styles.profileHeader}>
+                <img src={profilePic} className={styles.profilePic} />
+                <div className={styles.mainInfo}>
+                    <div className={styles.profileInfo}>
+                        <span className={styles.userName}>{user?.firstName} {user?.lastName}</span>
+                        <p className={styles.userId}>ID: {user?.id}</p>
+                    </div>
                 </div>
             </div>
+          </section>
+
+          <Wallet />
+
+          <VIP vipProgress={90} />
+          
+          <button className={`${styles.logout} ${styles.desktopOnlyLogout}`} onClick={() => logout()}>
+            <CiLogout className={styles.icon} />
+            <span>Sair</span>
+          </button>
         </div>
-      </section>
 
-      <Wallet />
-
-      <VIP vipProgress={90} />
-
-      <ExpandingButton icon={settings} text="Configurações" content={<Settings />} />
-      <ExpandingButton icon={cashFlow} text="Relatórios" content={<TransactionsHistory />} />
-      <ExpandingButton icon={invitation} text="Convide & Ganhe" />
-      <ExpandingButton icon={coupon} text="Resgatar Cupom" content={<ClaimCoupons />} />
-      <ExpandingButton icon={support} text="Suporte" />
-
-      <button className={styles.logout} onClick={() => logout()}>
-        <CiLogout className={styles.icon} />
-        <span>Sair</span>
-      </button>
+        <div className={styles.rightColumn}>
+          <ExpandingButton icon={settings} text="Configurações" content={<Settings />} />
+          <ExpandingButton icon={cashFlow} text="Relatórios" content={<TransactionsHistory />} />
+          <ExpandingButton icon={invitation} text="Convide & Ganhe" />
+          <ExpandingButton icon={coupon} text="Resgatar Cupom" content={<ClaimCoupons />} />
+          <ExpandingButton icon={support} text="Suporte" />
+          
+          <button className={`${styles.logout} ${styles.mobileOnlyLogout}`} onClick={() => logout()}>
+            <CiLogout className={styles.icon} />
+            <span>Sair</span>
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

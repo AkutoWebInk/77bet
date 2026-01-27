@@ -6,8 +6,44 @@
     flex-direction: column; /* stack children vertically */
     align-items: center;    /* center horizontally */
     background-color: transparent;
-
 }
+
+@media (min-width: 1024px) {
+    .page {
+        justify-content: center;
+        padding: 40px 0;
+        min-height: calc(100vh - 80px);
+    }
+    .header {
+        max-width: 500px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-bottom: none;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        background-color: #101010;
+        margin-top: 0;
+        min-height: auto;
+    }
+    .header img {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+    .loginContainer {
+        max-width: 500px;
+        height: auto;
+        padding-bottom: 40px;
+        background-color: #101010;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-top: none;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .inputGroup, .loginContainer button[type="submit"] {
+        width: 80%;
+    }
+}
+
 .header {
     width: 100%;
     height: auto;          /* let image define height */

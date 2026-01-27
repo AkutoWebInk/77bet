@@ -22,6 +22,47 @@
     transition: all 0.3s ease;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.innerHeader {
+    width: 100%;
+    max-width: var(--max-content-width);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .component {
+        height: 80px;
+    }
+}
+
+.desktopNav {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .desktopNav {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        margin-left: 50px;
+        flex: 1;
+    }
+    .navLink {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+    .navLink:hover {
+        color: orangered;
+    }
 }
 
 .icon{

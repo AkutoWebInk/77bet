@@ -9,6 +9,13 @@
     overflow-x: hidden;
 }
 
+@media (min-width: 1024px) {
+    .mainContainer {
+        gap: 30px;
+        padding: 20px 0;
+    }
+}
+
 .background{
     position: absolute;
     height: 60vh;

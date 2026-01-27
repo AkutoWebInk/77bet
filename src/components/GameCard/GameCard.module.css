@@ -16,6 +16,13 @@
   z-index: 1;
 }
 
+@media (min-width: 1024px) {
+  .gameCard {
+    width: 100%;
+    height: 250px;
+  }
+}
+
 .gameCard.expanded {
   width: 280px; /* Expands width */
   z-index: 100; /* Bring to front */
